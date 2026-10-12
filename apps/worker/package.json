@@ -1,0 +1,23 @@
+{
+  "name": "@website-audit/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "browser:install": "playwright install chromium",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "pretest": "npm run build --workspace @website-audit/audit-core --workspace @website-audit/audit-rules --workspace @website-audit/database && npm run build",
+    "test": "node --test dist/**/*.test.js"
+  },
+  "dependencies": {
+    "@website-audit/audit-core": "^0.1.0",
+    "@website-audit/audit-rules": "^0.1.0",
+    "@website-audit/database": "*",
+    "axe-core": "^4.14.0",
+    "cheerio": "^1.2.0",
+    "playwright": "^1.63.0"
+  }
+}

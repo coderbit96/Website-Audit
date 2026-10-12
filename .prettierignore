@@ -1,0 +1,7 @@
+.next
+dist
+.test-dist
+node_modules
+coverage
+package-lock.json
+packages/database/src/generated

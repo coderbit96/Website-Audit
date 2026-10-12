@@ -1,0 +1,50 @@
+{
+  "name": "website-audit-saas",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Production-oriented monorepo for the Website Audit SaaS.",
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=10.0.0"
+  },
+  "packageManager": "npm@11.13.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "predev": "npm run build --workspace @website-audit/shared --workspace @website-audit/audit-core --workspace @website-audit/audit-rules --workspace @website-audit/database",
+    "dev": "concurrently --kill-others-on-fail --names web,worker --prefix-colors blue,magenta \"npm run dev --workspace @website-audit/web\" \"npm run dev --workspace @website-audit/worker\"",
+    "predev:web": "npm run build --workspace @website-audit/shared --workspace @website-audit/audit-core --workspace @website-audit/database",
+    "dev:web": "npm run dev --workspace @website-audit/web",
+    "predev:worker": "npm run build --workspace @website-audit/shared --workspace @website-audit/audit-core --workspace @website-audit/audit-rules --workspace @website-audit/database",
+    "dev:worker": "npm run dev --workspace @website-audit/worker",
+    "browser:install": "npm run browser:install --workspace @website-audit/worker",
+    "database:check": "npm run db:check --workspace @website-audit/database",
+    "db:review:indexes": "node scripts/review-database-indexes.mjs",
+    "db:indexes": "npm run db:indexes --workspace @website-audit/database",
+    "db:plans:sync": "npm run db:plans:sync --workspace @website-audit/database",
+    "db:integrity:check": "npm run db:integrity:check --workspace @website-audit/database",
+    "db:migrate:integrity": "npm run db:migrate:integrity --workspace @website-audit/database",
+    "db:seed:dev": "npm run db:seed:dev --workspace @website-audit/database",
+    "admin:bootstrap": "npm run build --workspace @website-audit/database && tsx scripts/bootstrap-super-admin.mts",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "eslint . --max-warnings=0",
+    "pretypecheck": "npm run build --workspace @website-audit/shared --workspace @website-audit/audit-core --workspace @website-audit/audit-rules --workspace @website-audit/database",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:system": "node scripts/full-system-test.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.1",
+    "argon2": "^0.45.1",
+    "concurrently": "^10.0.6",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.8",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

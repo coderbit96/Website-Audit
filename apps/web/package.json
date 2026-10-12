@@ -1,0 +1,38 @@
+{
+  "name": "@website-audit/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "pretest": "npm run build --workspace @website-audit/audit-core --workspace @website-audit/database && tsc -p tsconfig.test.json",
+    "test": "node --test .test-dist/**/*.test.js"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.9.1",
+    "@website-audit/audit-core": "^0.1.0",
+    "@website-audit/audit-rules": "*",
+    "@website-audit/database": "*",
+    "@website-audit/shared": "*",
+    "argon2": "^0.45.1",
+    "next": "^16.3.8",
+    "next-auth": "^4.24.15",
+    "pdfkit": "^0.20.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-hook-form": "^7.89.0",
+    "react-is": "^19.3.0",
+    "recharts": "^3.10.1",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/pdfkit": "^0.17.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3"
+  }
+}

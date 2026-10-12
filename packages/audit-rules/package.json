@@ -1,0 +1,18 @@
+{
+  "name": "@website-audit/audit-rules",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "pretest": "npm run build",
+    "test": "node --test dist/**/*.test.js"
+  },
+  "dependencies": {
+    "@website-audit/audit-core": "*",
+    "cheerio": "^1.2.0"
+  }
+}

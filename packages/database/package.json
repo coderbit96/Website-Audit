@@ -1,0 +1,34 @@
+{
+  "name": "@website-audit/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "db:check": "tsx src/check.ts",
+    "db:indexes": "tsx src/create-indexes.ts",
+    "db:plans:sync": "tsx src/sync-plan-catalog.ts",
+    "db:integrity:check": "tsx src/migrations/20261010-audit-result-identities.ts --check",
+    "db:migrate:integrity": "tsx src/migrations/20261010-audit-result-identities.ts --apply",
+    "db:seed:dev": "npm run build && node dist/seed-development.js",
+    "prebuild": "npm run build --workspace @website-audit/shared",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "pretest": "npm run build",
+    "test": "node --test dist/**/*.test.js"
+  },
+  "dependencies": {
+    "@website-audit/shared": "*",
+    "argon2": "^0.45.1",
+    "dotenv": "^18.0.5",
+    "mongoose": "^9.10.4"
+  }
+}

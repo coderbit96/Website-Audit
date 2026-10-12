@@ -1,0 +1,34 @@
+{
+  "name": "@website-audit/audit-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./url-normalization": {
+      "types": "./dist/url-normalization.d.ts",
+      "import": "./dist/url-normalization.js",
+      "default": "./dist/url-normalization.js"
+    },
+    "./audit-queue": {
+      "types": "./dist/audit-queue.d.ts",
+      "import": "./dist/audit-queue.js",
+      "default": "./dist/audit-queue.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "pretest": "npm run build",
+    "test": "node --test dist/**/*.test.js"
+  },
+  "dependencies": {
+    "robots-parser": "^3.0.1"
+  }
+}
