@@ -3,6 +3,7 @@ import { formatPlanMonthlyPrice, PlanTier } from "@website-audit/shared";
 import { PlanOptions } from "../plans/plan-options";
 import type { ReactNode } from "react";
 
+import { SiteLogoMark } from "../brand/site-logo";
 import { PublicAuditForm } from "../public-audits/public-audit-form";
 
 type IconName =
@@ -277,7 +278,7 @@ export function MarketingHeader() {
         aria-label="SiteSignal home"
       >
         <span className="grid size-9 place-items-center rounded-xl border border-cyan-300/25 bg-cyan-300/10 text-cyan-200 shadow-[0_0_30px_rgba(34,211,238,0.12)]">
-          <SignalIcon name="chart" />
+          <SiteLogoMark className="size-5" />
         </span>
         <span className="text-[0.9rem] font-semibold tracking-tight sm:text-[0.95rem]">
           SiteSignal

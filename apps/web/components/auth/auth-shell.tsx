@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { SiteLogoMark } from "../brand/site-logo";
+
 export function AuthShell({
   eyebrow,
   title,
@@ -21,14 +23,7 @@ export function AuthShell({
         <section className="auth-story">
           <Link className="brand-link" href="/" aria-label="SiteSignal home">
             <span className="brand-mark">
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4 17V7m5 10v-4m5 4V9m5 8V4"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <SiteLogoMark />
             </span>
             <span>SiteSignal</span>
           </Link>

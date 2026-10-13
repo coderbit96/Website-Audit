@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { SiteLogoMark } from "../brand/site-logo";
 import { adminNavigation } from "./admin-links";
 
 export function AdminNavigation() {
@@ -10,7 +11,9 @@ export function AdminNavigation() {
   return (
     <nav className="admin-navigation" aria-label="System administration">
       <Link className="admin-navigation-brand" href="/admin">
-        <span aria-hidden="true">S</span>
+        <span>
+          <SiteLogoMark className="size-4" />
+        </span>
         <strong>SiteSignal</strong>
         <small>System</small>
       </Link>

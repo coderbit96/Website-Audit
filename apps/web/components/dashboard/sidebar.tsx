@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import type { CurrentAccount } from "../../lib/auth/current-user";
+import { SiteLogoMark } from "../brand/site-logo";
 import { SidebarNavigation } from "./sidebar-navigation";
 
 export function Sidebar({
@@ -18,14 +19,7 @@ export function Sidebar({
         {...(onNavigate ? { onClick: onNavigate } : {})}
       >
         <span className="app-brand-mark">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M4 17V7m5 10v-4m5 4V9m5 8V4"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+          <SiteLogoMark />
         </span>
         <span>
           <strong>SiteSignal</strong>

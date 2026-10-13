@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { SiteLogoMark } from "../brand/site-logo";
+
 export function PublicAuditHeader() {
   return (
     <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-6 sm:px-8 lg:px-10">
@@ -9,19 +11,7 @@ export function PublicAuditHeader() {
         aria-label="SiteSignal home"
       >
         <span className="grid size-10 place-items-center rounded-xl border border-cyan-300/25 bg-cyan-300/10 shadow-[0_0_30px_rgba(34,211,238,0.12)]">
-          <svg
-            aria-hidden="true"
-            className="size-5 text-cyan-300"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M4 17V7m5 10v-4m5 4V9m5 8V4"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+          <SiteLogoMark className="size-5 text-cyan-300" />
         </span>
         <span className="text-base font-semibold tracking-tight">
           SiteSignal

@@ -5,6 +5,7 @@ import { getWorkspaceEntitlementContext } from "@website-audit/database";
 import { UsageMetric } from "@website-audit/shared";
 
 import { LogoutButton } from "../../components/auth/logout-button";
+import { SiteLogoMark } from "../../components/brand/site-logo";
 import { PlanOptions } from "../../components/plans/plan-options";
 import { requireCurrentAccount } from "../../lib/auth/current-user";
 import { canManageWorkspace, isSuperAdmin } from "../../lib/auth/permissions";
@@ -32,10 +33,13 @@ export default async function ProfilePage() {
       </a>
       <header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-6 sm:px-8">
         <Link
-          className="text-lg font-semibold tracking-tight text-white"
+          className="inline-flex items-center gap-2.5 text-lg font-semibold tracking-tight text-white"
           href="/"
         >
-          SiteSignal
+          <span className="grid size-9 place-items-center rounded-xl border border-cyan-300/25 bg-cyan-300/10 text-cyan-200">
+            <SiteLogoMark className="size-5" />
+          </span>
+          <span>SiteSignal</span>
         </Link>
         <nav
           className="flex flex-wrap items-center gap-2"

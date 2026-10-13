@@ -35,15 +35,17 @@ const paymentSchema = z.object({
 type Credentials = {
   keyId: string;
   keySecret: string;
-  webhookSecret: string;
+  webhookSecret?: string;
 };
 
 export function getRazorpayCredentials(): Credentials | null {
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
   const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
-  if (!keyId || !keySecret || !webhookSecret) return null;
-  return { keyId, keySecret, webhookSecret };
+  if (!keyId || !keySecret) return null;
+  return webhookSecret
+    ? { keyId, keySecret, webhookSecret }
+    : { keyId, keySecret };
 }
 
 export class CheckoutUnavailableError extends Error {

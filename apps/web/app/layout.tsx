@@ -15,6 +15,10 @@ export const metadata: Metadata = {
     "A professional website audit platform for SEO, performance, accessibility, security, and mobile quality.",
   applicationName: "SiteSignal",
   category: "BusinessApplication",
+  icons: {
+    icon: [{ url: "/icon", type: "image/png", sizes: "64x64" }],
+    apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
+  },
   openGraph: {
     type: "website",
     siteName: "SiteSignal",

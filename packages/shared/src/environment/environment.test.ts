@@ -43,7 +43,7 @@ test("validates and normalizes the actual web server environment", () => {
   assert.equal(parsed.RAZORPAY_KEY_SECRET, undefined);
 });
 
-test("checkout requires all server-only Razorpay credentials together", () => {
+test("checkout requires a Razorpay key ID and key secret together", () => {
   assert.throws(
     () =>
       parseWebServerEnvironment({
@@ -56,13 +56,21 @@ test("checkout requires all server-only Razorpay credentials together", () => {
     ...baseEnvironment,
     RAZORPAY_KEY_ID: "rzp_test_12345678901234",
     RAZORPAY_KEY_SECRET: "test-secret-with-enough-length",
-    RAZORPAY_WEBHOOK_SECRET: "another-test-secret-with-enough-length",
   });
   assert.equal(parsed.RAZORPAY_KEY_ID, "rzp_test_12345678901234");
   assert.equal(
     "RAZORPAY_KEY_SECRET" in parsePublicEnvironment(baseEnvironment),
     false,
   );
+});
+
+test("keeps the Razorpay webhook secret optional", () => {
+  const parsed = parseWebServerEnvironment({
+    ...baseEnvironment,
+    RAZORPAY_KEY_ID: "rzp_test_12345678901234",
+    RAZORPAY_KEY_SECRET: "test-secret-with-enough-length",
+  });
+  assert.equal(parsed.RAZORPAY_WEBHOOK_SECRET, undefined);
 });
 
 test("rejects missing required server variables without including values", () => {

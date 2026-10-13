@@ -51,11 +51,9 @@ async function boundedRawBody(request: Request): Promise<string | null> {
 
 export async function POST(request: Request): Promise<NextResponse> {
   const credentials = getRazorpayCredentials();
-  if (!credentials)
-    return NextResponse.json(
-      { error: "Webhook unavailable." },
-      { status: 503 },
-    );
+  const webhookSecret = credentials?.webhookSecret;
+  if (!credentials || !webhookSecret)
+    return new NextResponse(null, { status: 404 });
   const rawBody = await boundedRawBody(request);
   if (!rawBody)
     return NextResponse.json(
@@ -67,7 +65,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     !verifyWebhookSignature({
       rawBody,
       signature,
-      webhookSecret: credentials.webhookSecret,
+      webhookSecret,
     })
   ) {
     return NextResponse.json(

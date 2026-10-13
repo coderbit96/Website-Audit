@@ -90,16 +90,24 @@ export const webServerEnvironmentSchema = databaseEnvironmentSchema
     RAZORPAY_WEBHOOK_SECRET: optionalSecret,
   })
   .superRefine((environment, context) => {
-    const paymentKeys = [
+    const checkoutKeys = [
       environment.RAZORPAY_KEY_ID,
       environment.RAZORPAY_KEY_SECRET,
-      environment.RAZORPAY_WEBHOOK_SECRET,
     ];
-    if (paymentKeys.some(Boolean) && !paymentKeys.every(Boolean)) {
+    if (checkoutKeys.some(Boolean) && !checkoutKeys.every(Boolean)) {
       context.addIssue({
         code: "custom",
-        message: "all Razorpay credentials are required to enable checkout",
+        message:
+          "Razorpay key ID and key secret are both required to enable checkout",
         path: ["RAZORPAY_KEY_ID"],
+      });
+    }
+    if (environment.RAZORPAY_WEBHOOK_SECRET && !checkoutKeys.every(Boolean)) {
+      context.addIssue({
+        code: "custom",
+        message:
+          "Razorpay checkout keys are required before a webhook can be enabled",
+        path: ["RAZORPAY_WEBHOOK_SECRET"],
       });
     }
     if (!environment.AUTH_URL && !environment.NEXTAUTH_URL) {
