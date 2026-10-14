@@ -189,7 +189,7 @@ The worker opens untrusted websites in Chromium for limited accessibility and mo
 
 ### Vercel web deployment
 
-Vercel can host the Next.js web app, but deploy the worker on a separate Node.js host that supports Playwright Chromium and restricted outbound network access. In the Vercel project, select `apps/web` as the **Root Directory**, enable **Include source files outside of the Root Directory in the Build Step**, use Node.js 22, and leave the build command as `npm run build`. Do not replace it with `next build`: the workspace-aware build script compiles the shared packages before Next.js starts.
+Vercel can host the Next.js web app, but deploy the worker on a separate Node.js host that supports Playwright Chromium and restricted outbound network access. In the Vercel project, select `apps/web` as the **Root Directory**, enable **Include source files outside of the Root Directory in the Build Step**, and use Node.js 22. The committed `apps/web/vercel.json` runs `npm install --production=false` so TypeScript and other build dependencies are installed, then runs `npm run build`. Do not override either command in the Vercel dashboard or replace the build command with `next build`: the workspace-aware build script compiles the shared packages before Next.js starts. Remove any manually configured `NODE_ENV` variable from Vercel Project Environment Variables; Vercel supplies the production runtime value itself.
 
 Set the production environment variables in Vercel's Project Settings, including `MONGODB_URI`, `AUTH_SECRET`, `AUTH_URL`, and `NEXT_PUBLIC_APP_URL` with your deployed HTTPS URL. Add the same server-only provider keys there only when you use those services. Never upload `.env` or use its local values in a deployment.
 
