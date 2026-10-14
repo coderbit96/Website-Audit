@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { parsePublicEnvironment } from "./public.js";
+import {
+  parseDeploymentPublicEnvironment,
+  parsePublicEnvironment,
+} from "./public.js";
 import {
   parseDevelopmentSeedEnvironment,
   parseWebServerEnvironment,
@@ -27,6 +30,41 @@ test("keeps the public environment limited to browser-safe variables", () => {
   });
   assert.equal("AUTH_SECRET" in parsed, false);
   assert.equal("MONGODB_URI" in parsed, false);
+});
+
+test("uses Vercel's production domain when no canonical URL is configured", () => {
+  assert.deepEqual(
+    parseDeploymentPublicEnvironment({
+      VERCEL_PROJECT_PRODUCTION_URL: "sitesignal.vercel.app",
+    }),
+    { NEXT_PUBLIC_APP_URL: "https://sitesignal.vercel.app" },
+  );
+});
+
+test("prefers an explicit canonical URL and rejects invalid configuration", () => {
+  assert.deepEqual(
+    parseDeploymentPublicEnvironment({
+      NEXT_PUBLIC_APP_URL: "https://sitesignal.example",
+      VERCEL_PROJECT_PRODUCTION_URL: "sitesignal.vercel.app",
+    }),
+    { NEXT_PUBLIC_APP_URL: "https://sitesignal.example" },
+  );
+  assert.throws(
+    () =>
+      parseDeploymentPublicEnvironment({
+        NEXT_PUBLIC_APP_URL: "",
+        VERCEL_PROJECT_PRODUCTION_URL: "sitesignal.vercel.app",
+      }),
+    /NEXT_PUBLIC_APP_URL/,
+  );
+  assert.throws(
+    () =>
+      parseDeploymentPublicEnvironment({
+        VERCEL_PROJECT_PRODUCTION_URL: "sitesignal.vercel.app\/bad",
+      }),
+    /invalid Vercel production domain/,
+  );
+  assert.throws(() => parseDeploymentPublicEnvironment({}), /NEXT_PUBLIC_APP_URL/);
 });
 
 test("validates and normalizes the actual web server environment", () => {

@@ -22,8 +22,12 @@ const optionalHttpUrl = z.preprocess(
     .trim()
     .url("must be a valid absolute URL")
     .refine((value) => {
-      const protocol = new URL(value).protocol;
-      return protocol === "http:" || protocol === "https:";
+      try {
+        const protocol = new URL(value).protocol;
+        return protocol === "http:" || protocol === "https:";
+      } catch {
+        return false;
+      }
     }, "must use http or https")
     .optional(),
 );

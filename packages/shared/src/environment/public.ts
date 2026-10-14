@@ -5,8 +5,12 @@ const publicHttpUrl = z
   .trim()
   .url("must be a valid absolute URL")
   .refine((value) => {
-    const protocol = new URL(value).protocol;
-    return protocol === "http:" || protocol === "https:";
+    try {
+      const protocol = new URL(value).protocol;
+      return protocol === "http:" || protocol === "https:";
+    } catch {
+      return false;
+    }
   }, "must use http or https");
 
 export const publicEnvironmentSchema = z
@@ -33,6 +37,39 @@ export function parsePublicEnvironment(
   const result = publicEnvironmentSchema.safeParse(input);
   if (!result.success) throw environmentError("Public", result.error);
   return result.data;
+}
+
+/** Uses Vercel's real production domain when no canonical URL was configured. */
+export function parseDeploymentPublicEnvironment(
+  input: Record<string, string | undefined>,
+): PublicEnvironment {
+  const configuredUrl = input.NEXT_PUBLIC_APP_URL;
+  if (configuredUrl !== undefined) {
+    return parsePublicEnvironment({ NEXT_PUBLIC_APP_URL: configuredUrl });
+  }
+
+  const domain = input.VERCEL_PROJECT_PRODUCTION_URL;
+  if (!domain) {
+    return parsePublicEnvironment({ NEXT_PUBLIC_APP_URL: undefined });
+  }
+
+  const result = parsePublicEnvironment({
+    NEXT_PUBLIC_APP_URL: `https://${domain}`,
+  });
+  const url = new URL(result.NEXT_PUBLIC_APP_URL);
+  if (
+    url.hostname !== domain.toLowerCase() ||
+    url.port ||
+    url.username ||
+    url.password ||
+    url.pathname !== "/" ||
+    url.search ||
+    url.hash
+  ) {
+    throw new Error("Public environment validation failed: invalid Vercel production domain");
+  }
+
+  return result;
 }
 
 export { environmentError };
