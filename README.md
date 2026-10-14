@@ -187,6 +187,12 @@ Use a process manager or hosting platform to keep both running. Do not run the d
 
 The worker opens untrusted websites in Chromium for limited accessibility and mobile checks. In production, run it under a restricted OS account or isolated host with network egress rules that deny private, loopback, link-local, and metadata addresses. Application-level URL checks are defense in depth, not a replacement for a network boundary. This repository does not provide that deployment isolation or a process manager.
 
+### Vercel web deployment
+
+Vercel can host the Next.js web app, but deploy the worker on a separate Node.js host that supports Playwright Chromium and restricted outbound network access. In the Vercel project, select `apps/web` as the **Root Directory**, enable **Include source files outside of the Root Directory in the Build Step**, use Node.js 22, and leave the build command as `npm run build`. Do not replace it with `next build`: the workspace-aware build script compiles the shared packages before Next.js starts.
+
+Set the production environment variables in Vercel's Project Settings, including `MONGODB_URI`, `AUTH_SECRET`, `AUTH_URL`, and `NEXT_PUBLIC_APP_URL` with your deployed HTTPS URL. Add the same server-only provider keys there only when you use those services. Never upload `.env` or use its local values in a deployment.
+
 ## Troubleshooting
 
 - **MongoDB connection refused or timed out:** run `npm run database:check`. Check the service and `MONGODB_URI`; for hosted MongoDB, check credentials and network/IP access rules.

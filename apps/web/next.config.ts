@@ -1,16 +1,13 @@
 import { config as loadEnv } from "dotenv";
 import type { NextConfig } from "next";
 import { fileURLToPath } from "node:url";
-import { parseWebServerEnvironment } from "@website-audit/shared/environment/server";
 
+// Next.js loads `.env` from the app directory. This monorepo keeps local
+// secrets at its root, while Vercel injects deployment values directly.
 loadEnv({
   path: fileURLToPath(new URL("../../.env", import.meta.url)),
   quiet: true,
 });
-
-// Fail before the development or production server starts. Validation errors
-// identify variable names without including their values.
-parseWebServerEnvironment(process.env);
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
