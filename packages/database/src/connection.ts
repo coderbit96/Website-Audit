@@ -1,11 +1,14 @@
 import { config as loadEnv } from "dotenv";
 import mongoose, { type Mongoose } from "mongoose";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseDatabaseEnvironment } from "@website-audit/shared/environment/server";
 
 if (!process.env.MONGODB_URI) {
   loadEnv({
-    path: fileURLToPath(new URL("../../../.env", import.meta.url)),
+    // Keep local CLI/worker env loading, but do not make the ignored .env file
+    // a statically resolved asset in the Next.js production bundle.
+    path: resolve(dirname(fileURLToPath(import.meta.url)), "../../../.env"),
     quiet: true,
   });
 }
