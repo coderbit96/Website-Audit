@@ -8,6 +8,7 @@ import {
   WorkspaceModel,
 } from "@website-audit/database";
 import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 
@@ -27,6 +28,9 @@ export type CurrentAccount = {
 
 export const getCurrentAccount = cache(
   async (): Promise<CurrentAccount | null> => {
+    // Session lookup requires an incoming request. Opt protected pages out of
+    // prerendering before validating runtime-only authentication secrets.
+    await headers();
     const session = await getServerSession(getAuthOptions());
 
     if (!session?.user?.id) {
