@@ -11,7 +11,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 
-import { authOptions } from "./auth-options";
+import { getAuthOptions } from "./auth-options";
 
 export type CurrentAccount = {
   id: string;
@@ -27,7 +27,7 @@ export type CurrentAccount = {
 
 export const getCurrentAccount = cache(
   async (): Promise<CurrentAccount | null> => {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(getAuthOptions());
 
     if (!session?.user?.id) {
       return null;

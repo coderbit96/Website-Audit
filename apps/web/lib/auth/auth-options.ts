@@ -18,24 +18,11 @@ import {
 import { webLogger } from "../logging/logger";
 import { getWebServerEnvironment } from "../environment/server";
 
-const environment = getWebServerEnvironment();
-
-// Auth.js v4 still reads NEXTAUTH_URL. Keep AUTH_URL as the public project
-// setting while providing the compatibility name expected by this version.
-if (!process.env.NEXTAUTH_URL && environment.AUTH_URL) {
-  process.env.NEXTAUTH_URL = environment.AUTH_URL;
-}
-
 const dummyPasswordHash = hashPassword(
   "This-password-is-only-for-timing-equalization-7",
 );
 
-function getAuthSecret(): string {
-  return environment.AUTH_SECRET;
-}
-
-export const authOptions = {
-  secret: getAuthSecret(),
+const authOptionsBase = {
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
@@ -138,4 +125,17 @@ export const authOptions = {
       });
     },
   },
-} satisfies NextAuthOptions;
+} satisfies Omit<NextAuthOptions, "secret">;
+
+/** Validate server credentials only when an authentication request is handled. */
+export function getAuthOptions(): NextAuthOptions {
+  const environment = getWebServerEnvironment();
+
+  // Auth.js v4 still reads NEXTAUTH_URL. Keep AUTH_URL as the public project
+  // setting while providing the compatibility name expected by this version.
+  if (!process.env.NEXTAUTH_URL && environment.AUTH_URL) {
+    process.env.NEXTAUTH_URL = environment.AUTH_URL;
+  }
+
+  return { ...authOptionsBase, secret: environment.AUTH_SECRET };
+}
