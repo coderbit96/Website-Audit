@@ -73,6 +73,7 @@ export const webServerEnvironmentSchema = databaseEnvironmentSchema
       .min(16, "must contain at least 16 characters"),
     AUTH_URL: optionalHttpUrl,
     NEXTAUTH_URL: optionalHttpUrl,
+    VERCEL: z.literal("1").optional(),
     GOOGLE_PAGESPEED_API_KEY: optionalText,
     PUBLIC_AUDIT_HASH_SECRET: optionalSecret,
     PUBLIC_AUDIT_TRUST_PROXY: booleanFlag,
@@ -114,10 +115,14 @@ export const webServerEnvironmentSchema = databaseEnvironmentSchema
         path: ["RAZORPAY_WEBHOOK_SECRET"],
       });
     }
-    if (!environment.AUTH_URL && !environment.NEXTAUTH_URL) {
+    if (
+      !environment.AUTH_URL &&
+      !environment.NEXTAUTH_URL &&
+      environment.VERCEL !== "1"
+    ) {
       context.addIssue({
         code: "custom",
-        message: "AUTH_URL or NEXTAUTH_URL is required",
+        message: "AUTH_URL or NEXTAUTH_URL is required outside Vercel",
         path: ["AUTH_URL"],
       });
     }

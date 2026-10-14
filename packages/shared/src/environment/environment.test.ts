@@ -81,6 +81,20 @@ test("validates and normalizes the actual web server environment", () => {
   assert.equal(parsed.RAZORPAY_KEY_SECRET, undefined);
 });
 
+test("allows Auth.js to use Vercel's request host without a fixed auth URL", () => {
+  const withoutAuthUrl = { ...baseEnvironment, AUTH_URL: undefined };
+  const parsed = parseWebServerEnvironment({
+    ...withoutAuthUrl,
+    VERCEL: "1",
+  });
+  assert.equal(parsed.AUTH_URL, undefined);
+  assert.equal(parsed.VERCEL, "1");
+  assert.throws(
+    () => parseWebServerEnvironment(withoutAuthUrl),
+    /AUTH_URL or NEXTAUTH_URL is required outside Vercel/,
+  );
+});
+
 test("checkout requires a Razorpay key ID and key secret together", () => {
   assert.throws(
     () =>
